@@ -39,7 +39,7 @@ class Welcome extends Application {
         $this->load->model('Order');
         
         foreach ($orders as &$arr) {
-            @$order = $this->Order->makeOrder($arr['order']);
+            $order = $this->Order->makeOrder($arr['order']);
             $customer = $order['customer'];
             $arr['customer'] = $customer;
         }
