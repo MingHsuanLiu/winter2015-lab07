@@ -11,6 +11,10 @@ class Menu extends CI_Model {
     protected $xml = null;
     protected $patty_names = array();
     protected $patties = array();
+    // add missing sauces
+    protected $toppings = array();
+    protected $sauces = array();
+    protected $cheeses = array();
 
     // Constructor
     public function __construct() {
@@ -30,6 +34,29 @@ class Menu extends CI_Model {
             $record->price = (float) $patty['price'];
             $patties[$record->code] = $record;
         }
+
+        foreach ($this->xml->cheeses->cheese as $patty) {
+            $record = new stdClass();
+            $record->code = (string) $patty['code'];
+            $record->name = (string) $patty;
+            $record->price = (float) $patty['price'];
+            $this->cheeses[$record->code] = $record;
+        }
+
+        foreach ($this->xml->toppings->topping as $patty) {
+            $record = new stdClass();
+            $record->code = (string) $patty['code'];
+            $record->name = (string) $patty;
+            $record->price = (float) $patty['price'];
+            $this->toppings[$record->code] = $record;
+        }
+
+        foreach ($this->xml->sauces->sauce as $patty) {
+            $record = new stdClass();
+            $record->code = (string) $patty['code'];
+            $record->name = (string) $patty;
+            $this->sauces[$record->code] = $record;
+        }
     }
 
     // retrieve a list of patties, to populate a dropdown, for instance
@@ -41,6 +68,40 @@ class Menu extends CI_Model {
     function getPatty($code) {
         if (isset($this->patties[$code]))
             return $this->patties[$code];
+        else
+            return null;
+    }
+
+    // retrieve a list of patties, to populate a dropdown, for instance
+    function toppings() {
+        return $this->topping_names;
+    }
+
+    // retrieve a patty record, perhaps for pricing
+    function getTopping($code) {
+        if (isset($this->toppings[$code]))
+            return $this->toppings[$code];
+        else
+            return null;
+    }
+
+    // retrieve a list of patties, to populate a dropdown, for instance
+    function sauces() {
+        return $this->sauce_names;
+    }
+
+    // retrieve a patty record, perhaps for pricing
+    function getSauce($code) {
+        if (isset($this->sauces[$code]))
+            return $this->sauces[$code];
+        else
+            return null;
+    }
+
+    // retrieve a patty record, perhaps for pricing
+    function getCheese($code) {
+        if (isset($this->cheeses[$code]))
+            return $this->cheeses[$code];
         else
             return null;
     }
